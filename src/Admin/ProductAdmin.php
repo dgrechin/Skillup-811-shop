@@ -1,40 +1,47 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: skillup_student
- * Date: 16.01.19
- * Time: 21:16
+ * User: dgrechin
+ * Date: 18.01.19
+ * Time: 14:03
  */
 
 namespace App\Admin;
 
 
-use function Sodium\add;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class CategoryAdmin extends AbstractAdmin
+class ProductAdmin extends AbstractAdmin
 {
     protected function configureListFields(ListMapper $list)
     {
         $list
             -> addIdentifier('name')
-            -> addIdentifier('id');
+            -> addIdentifier('id')
+            -> addIdentifier('description')
+            -> addIdentifier('price');
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
-         -> add('id')
-         -> add('name');
+            -> add('id')
+            -> add('name')
+            -> add('description')
+            -> add('price');
     }
 
     protected function configureFormFields(FormMapper $form)
     {
         $form
-             ->add('name');
+            ->add('name')
+            ->add('description')
+            ->add('price');
+
     }
+
 
 }
