@@ -41,6 +41,7 @@ class ProductAdmin extends AbstractAdmin
             ->add('description')
             ->add('price');
 
+
     }
 
 

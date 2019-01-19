@@ -31,4 +31,9 @@ services:
     App\Admin\CategoryAdmin:
         arguments: [~, App\Entity\Category, ~]
         tags:
-        - { name: sonata.admin, manager_type: orm, label: Category }
+        - { name: sonata.admin, manager_type: orm, label: Категории }
+
+    App\Admin\ProductAdmin:
+        arguments: [~, App\Entity\Product, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Продукты }
