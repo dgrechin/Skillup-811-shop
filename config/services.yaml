@@ -36,4 +36,4 @@ services:
     App\Admin\ProductAdmin:
         arguments: [~, App\Entity\Product, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Продукты }
+            - { name: sonata.admin, manager_type: orm, label: Товары }

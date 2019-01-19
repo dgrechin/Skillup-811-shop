@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dgrechin
- * Date: 18.01.19
- * Time: 14:03
- */
 
 namespace App\Admin;
 
 
+use function Sodium\add;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -22,7 +17,9 @@ class ProductAdmin extends AbstractAdmin
             -> addIdentifier('name')
             -> addIdentifier('id')
             -> addIdentifier('description')
-            -> addIdentifier('price');
+            -> addIdentifier('price')
+            -> addIdentifier('category');
+
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter)
@@ -37,10 +34,11 @@ class ProductAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $form
-            ->add('name')
-            ->add('description')
-            ->add('price');
-
+            -> add('name')
+            -> add('description')
+            -> add('price')
+            -> add('category')
+            -> add('isTop' );
 
     }
 

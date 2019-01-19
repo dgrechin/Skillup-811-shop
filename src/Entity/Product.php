@@ -28,7 +28,7 @@ class Product
     private $description;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer" , nullable=true)
      */
     private $price;
 
