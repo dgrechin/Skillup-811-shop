@@ -21,6 +21,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem",inversedBy="OrderProduct" cascade={"persist", "remove"})
      */
     private $name;
 
@@ -31,6 +32,7 @@ class Product
 
     /**
      * @ORM\Column(type="integer" , nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", inversedBy="Price" cascade={"persist", "remove"})
      */
     private $price;
 
@@ -44,15 +46,11 @@ class Product
      */
     private $category;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="Price")
-     */
-    private $PriceinOrder;
 
     public function __construct()
     {
         $this->isTop = false;
-        $this->PriceinOrder = new ArrayCollection();
+        $this->PriceInOrder = new ArrayCollection();
     }
 
     public function getId(): ?int

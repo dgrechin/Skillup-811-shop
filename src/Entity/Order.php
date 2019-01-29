@@ -42,8 +42,10 @@ class Order
 
     /**
      * @ORM\Column(type="integer")
+     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", mappedBy="SumOfOrder", cascade={"persist", "remove"})
      */
     private $orderSum;
+
 
     public function getId(): ?int
     {
