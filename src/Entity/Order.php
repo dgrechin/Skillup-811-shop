@@ -42,9 +42,13 @@ class Order
 
     /**
      * @ORM\Column(type="integer")
-     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", mappedBy="SumOfOrder", cascade={"persist", "remove"})
      */
     private $orderSum;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", mappedBy="OrderSum", cascade={"persist", "remove"})
+     */
+    private $orderItem;
 
 
     public function getId(): ?int
@@ -108,6 +112,23 @@ class Order
     public function setOrderSum(int $orderSum): self
     {
         $this->orderSum = $orderSum;
+
+        return $this;
+    }
+
+    public function getOrderItem(): ?OrderItem
+    {
+        return $this->orderItem;
+    }
+
+    public function setOrderItem(OrderItem $orderItem): self
+    {
+        $this->orderItem = $orderItem;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $orderItem->getOrderSum()) {
+            $orderItem->setOrderSum($this);
+        }
 
         return $this;
     }

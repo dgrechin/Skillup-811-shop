@@ -21,7 +21,6 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem",inversedBy="OrderProduct" cascade={"persist", "remove"})
      */
     private $name;
 
@@ -32,7 +31,6 @@ class Product
 
     /**
      * @ORM\Column(type="integer" , nullable=true)
-     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", inversedBy="Price" cascade={"persist", "remove"})
      */
     private $price;
 
@@ -45,6 +43,12 @@ class Product
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="products")
      */
     private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\OrderItem", inversedBy="name")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $orderItem;
 
 
     public function __construct()
@@ -119,6 +123,18 @@ class Product
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getOrderItem(): ?OrderItem
+    {
+        return $this->orderItem;
+    }
+
+    public function setOrderItem(?OrderItem $orderItem): self
+    {
+        $this->orderItem = $orderItem;
 
         return $this;
     }
