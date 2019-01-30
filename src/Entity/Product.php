@@ -45,16 +45,16 @@ class Product
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\OrderItem", inversedBy="name")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="product", orphanRemoval=true)
      */
-    private $orderItem;
+    private $orderItems;
+
 
 
     public function __construct()
     {
         $this->isTop = false;
-        $this->PriceInOrder = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,14 +127,33 @@ class Product
         return $this;
     }
 
-    public function getOrderItem(): ?OrderItem
+    /**
+     * @return Collection|OrderItem[]
+     */
+    public function getOrderItems(): Collection
     {
-        return $this->orderItem;
+        return $this->orderItems;
     }
 
-    public function setOrderItem(?OrderItem $orderItem): self
+    public function addOrderItem(OrderItem $orderItem): self
     {
-        $this->orderItem = $orderItem;
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): self
+    {
+        if ($this->orderItems->contains($orderItem)) {
+            $this->orderItems->removeElement($orderItem);
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getProduct() === $this) {
+                $orderItem->setProduct(null);
+            }
+        }
 
         return $this;
     }

@@ -2,17 +2,20 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
- */
+ * @ORM\Table(name = "orders")
+ * */
 class Order
 {
     const STATUS_NEW = 1;
     const STATUS_ORDERED = 2;
-    const STATUS_SEND=3;
-    const STATUS_GET = 4;
+    const STATUS_SENT=3;
+    const STATUS_RECEIVED = 4;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -23,7 +26,7 @@ class Order
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="integer")
@@ -31,25 +34,35 @@ class Order
     private $status;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean", options={"default":false})
      */
-    private $paymentStatus;
 
+    private $isPaid;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
      */
     private $user;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default":0})
      */
-    private $orderSum;
+    private $amount;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", mappedBy="OrderSum", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="order", orphanRemoval=true,
+     *     indexBy="product_id", cascade={"persist"})
      */
-    private $orderItem;
+    private $items;
 
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->status = self::STATUS_NEW;
+        $this->isPaid=false;
+        $this->amount = 0 ;
+        $this->items = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -58,12 +71,12 @@ class Order
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -80,14 +93,14 @@ class Order
         return $this;
     }
 
-    public function getPaymentStatus(): ?int
+    public function getIsPaid(): ?int
     {
-        return $this->paymentStatus;
+        return $this->isPaid;
     }
 
-    public function setPaymentStatus(int $paymentStatus): self
+    public function setIsPaid(int $isPaid): self
     {
-        $this->paymentStatus = $paymentStatus;
+        $this->isPaid = $isPaid;
 
         return $this;
     }
@@ -104,32 +117,57 @@ class Order
         return $this;
     }
 
-    public function getOrderSum(): ?int
+    public function getAmount(): ?int
     {
-        return $this->orderSum;
+        return $this->amount;
+
     }
 
-    public function setOrderSum(int $orderSum): self
+    public function setAmount(int $amount): self
     {
-        $this->orderSum = $orderSum;
+        $this->amount = $amount;
 
         return $this;
     }
 
-    public function getOrderItem(): ?OrderItem
+    /**
+     * @return Collection|OrderItem[]
+     */
+    public function getItems(): Collection
     {
-        return $this->orderItem;
+        return $this->items;
     }
 
-    public function setOrderItem(OrderItem $orderItem): self
+    public function addItem(OrderItem $orderItem): self
     {
-        $this->orderItem = $orderItem;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $orderItem->getOrderSum()) {
-            $orderItem->setOrderSum($this);
+        if (!$this->items->contains($orderItem)) {
+            $this->items[] = $orderItem;
+            $orderItem->setOrder($this);
         }
 
         return $this;
+    }
+
+    public function removeItem(OrderItem $orderItem): self
+    {
+        if ($this->items->contains($orderItem)) {
+            $this->items->removeElement($orderItem);
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getOrder() === $this) {
+                $orderItem->setOrder(null);
+            }
+            $this->updateAmount();
+            return $this;
+        }
+
+        return $this;
+    }
+    public function updateAmount()
+    {
+        $amount = 0;
+        foreach ($this->getItems()as $item){
+        $amount += $item->getCost();
+    }
+        $this->setAmount($amount);
     }
 }

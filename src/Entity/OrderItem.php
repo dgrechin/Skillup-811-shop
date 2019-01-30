@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderItemRepository")
+ * @ORM\Table(name = "order_items")
  */
 class OrderItem
 {
@@ -19,30 +18,39 @@ class OrderItem
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="orderItem")
+     * @var Order
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $name;
+    private $order;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderItems")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $product;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $NumberOfProducts;
+    private $quantity;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="orderItem")
+     * @ORM\Column(type="integer")
      */
     private $price;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Order", inversedBy="orderItem", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer")
      */
-    private $OrderSum;
+    private $cost;
 
     public function __construct()
     {
-        $this->name = new ArrayCollection();
-        $this->price = new ArrayCollection();
+        $this->quantity = 0;
+        $this->price = 0;
+        $this->cost = 0;
     }
 
     public function getId(): ?int
@@ -50,89 +58,78 @@ class OrderItem
         return $this->id;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getName(): Collection
+    public function getOrder(): ?Order
     {
-        return $this->name;
+        return $this->order;
     }
 
-    public function addName(Product $name): self
+    public function setOrder(?Order $order): self
     {
-        if (!$this->name->contains($name)) {
-            $this->name[] = $name;
-            $name->setOrderItem($this);
-        }
+        $this->order = $order;
 
         return $this;
     }
 
-    public function removeName(Product $name): self
+    public function getProduct(): ?Product
     {
-        if ($this->name->contains($name)) {
-            $this->name->removeElement($name);
-            // set the owning side to null (unless already changed)
-            if ($name->getOrderItem() === $this) {
-                $name->setOrderItem(null);
-            }
-        }
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+        $this->setPrice($product->getPrice());
 
         return $this;
     }
 
-    public function getNumberOfProducts(): ?int
+    public function getQuantity(): ?int
     {
-        return $this->NumberOfProducts;
+        return $this->quantity;
     }
 
-    public function setNumberOfProducts(int $NumberOfProducts): self
+    public function setQuantity(int $quantity): self
     {
-        $this->NumberOfProducts = $NumberOfProducts;
+        $this->quantity = $quantity;
+        $this->updateCost();
+
+        return $this;
+    }
+    public function addQuantity(int $value):self
+    {
+        $this->setQuantity($this->quantity+$value);
 
         return $this;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getPrice(): Collection
+    public function getPrice(): ?int
     {
         return $this->price;
     }
 
-    public function addPrice(Product $price): self
+    public function setPrice(int $price): self
     {
-        if (!$this->price->contains($price)) {
-            $this->price[] = $price;
-            $price->setOrderItem($this);
-        }
+        $this->price = $price;
+        $this->updateCost();
 
         return $this;
     }
 
-    public function removePrice(Product $price): self
+    public function getCost(): ?int
     {
-        if ($this->price->contains($price)) {
-            $this->price->removeElement($price);
-            // set the owning side to null (unless already changed)
-            if ($price->getOrderItem() === $this) {
-                $price->setOrderItem(null);
-            }
-        }
+        return $this->cost;
+    }
+
+    public function setCost(int $cost): self
+    {
+        $this->cost = $cost;
 
         return $this;
     }
-
-    public function getOrderSum(): ?Order
+    private function updateCost()
     {
-        return $this->OrderSum;
-    }
+      $this->cost = $this->getPrice() * $this->getQuantity();
+      $this->order->updateAmount();
 
-    public function setOrderSum(Order $OrderSum): self
-    {
-        $this->OrderSum = $OrderSum;
-
-        return $this;
     }
 }
