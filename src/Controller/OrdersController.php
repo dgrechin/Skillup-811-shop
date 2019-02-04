@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Order;
+
 use App\Entity\Product;
-use App\Repository\OrderRepository;
 use App\Service\OrdersService;
-use phpDocumentor\Reflection\Types\Object_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,8 +28,15 @@ class OrdersController extends AbstractController
     public function addToCart(Product $product, OrdersService $ordersService, Request $request)
     {
         $order = $ordersService->addToCart($product);
+        if ($request->isXmlHttpRequest()){
+            $response = $this->render('orders/cartInHeader.html.twig',[
+                'cart'=>$order,
+            ]);
+        }else{
         $referer = $request->headers->get('referer');
         $response = $this->redirect($referer);
+        }
+
         $response->headers->setCookie(new Cookie('order_id' , $order->getId(),new \DateTime('+1 year')));
 
         return $response;
