@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+
+<h1>CART</h1>
+
+    <h1>{{ cart.id }}</h1>
+
+    <p> {{ cart.status }}</p>
+    <p> {{ cart.amount }}</p>
+    <p> {{ cart.isPaid }}</p>
+    <p> {{ cart.createdAt|localizeddate }}</p>
+
+    <table class="table table-striped">
+        <tr>
+        <td>Товар</td>
+        <th>Цена </th>
+        <th>Кол-во</th>
+        <th>Стоимость</th>
+        </tr>
+        {% for item in cart.items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.price|money }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.cost|money }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <th colspan="3">Всего </th>
+            <th> {{ cart.amount|money }} </th>
+        </tr>
+    </table>
+{% endblock %}
