@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\OrderItem;
 use App\Entity\Product;
 use App\Service\OrdersService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -57,5 +58,35 @@ class OrdersController extends AbstractController
         $cart = $ordersService->getOrderFromRequest();
         return $this->render('orders/cartInHeader.html.twig', [
             'cart' => $cart]);
+    }
+    /**
+     * @Route("/orders/remove-item/{id}", name="order_remove_item")
+     */
+    public function removeItem(OrderItem $orderItem, OrdersService $ordersService,Request $request)
+    {
+        $ordersService->removeItem( $orderItem);
+        if ($request->isXmlHttpRequest())
+        {
+            return $this->render('orders/cartItems.html.twig',
+            [
+                'cart'=>$ordersService->getOrderFromRequest(),
+            ]);
+        }
+        return $this->redirectToRoute('cart');
+    }
+    /**
+     * @Route("/orders/set-order-quntity/{id}", name="order_set_item_quantity")
+     */
+    public  function  setOrderQuantity(OrderItem $orderItem, OrdersService $ordersService, Request $request)
+    {
+        $ordersService->setItemQuantity($orderItem, $request->request->get('quantity'));
+        if ($request->isXmlHttpRequest())
+        {
+            return $this->render('orders/cartItems.html.twig',
+                [
+                    'cart'=>$ordersService->getOrderFromRequest(),
+                ]);
+        }
+        return $this->redirectToRoute('cart');
     }
 }

@@ -144,6 +144,7 @@ class Order
             $this->items[] = $orderItem;
             $orderItem->setOrder($this);
         }
+        $this->updateAmount();
 
         return $this;
     }
