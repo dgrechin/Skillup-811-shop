@@ -5,10 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  * @ORM\Table(name="products")
+ * @Vich\Uploadable()
  */
 class Product
 {
@@ -48,6 +52,25 @@ class Product
      * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="product", orphanRemoval=true)
      */
     private $orderItems;
+
+    /**
+     * @var File
+     * @Vich\UploadableField(mapping="products", fileNameProperty="imageFileName" )
+     */
+    private  $image;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private  $imageFileName;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true))
+     */
+    private $updateAt;
+
+
 
 
 
@@ -157,5 +180,47 @@ class Product
 
         return $this;
     }
+
+    public function getImageFileName(): ?string
+    {
+        return $this->imageFileName;
+    }
+
+    public function setImageFileName(?string $imageFileName): self
+    {
+        $this->imageFileName = $imageFileName;
+
+        return $this;
+    }
+
+    public function getUpdateAt(): ?\DateTimeInterface
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(?\DateTimeInterface $updateAt): self
+    {
+        $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+
+    public function getImage(): ?File
+    {
+        return $this->image;
+    }
+
+
+    public function setImage(?File $image): self
+    {
+        $this->image = $image;
+        if ($image !==null)
+        {
+            $this->updateAt=new \DateTime();
+        }
+        return $this;
+    }
+
 
 }

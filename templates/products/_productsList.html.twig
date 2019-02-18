@@ -1,0 +1,18 @@
+{% for product in products %}
+    <div class="col-sm-3" style="margin-top: 30px">
+        <div class="card">
+            {% if vich_uploader_asset(product,'image') %}
+            <img src="{{ vich_uploader_asset(product, 'image')|imagine_filter('squared_thumbnail') }}" class="card-img-top" alt="{{ product.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title"> {{ product.name }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <a href="{{ path('products_item', {'id': product.id}) }}" class="btn btn-primary">Подробнее</a>
+                <a href="{{ path('orders_add_to_cart', {'id' : product.id}) }}" class="btn btn-primary mt-1 js-add-to-cart">Добавить в корзину </a>
+            </div>
+            <div class="card-footer">
+                {{ product.realPrice| localizedcurrency ('UAH') }}
+            </div>
+        </div >
+    </div>
+{% endfor %}
