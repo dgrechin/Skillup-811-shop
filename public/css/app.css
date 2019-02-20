@@ -96,3 +96,7 @@
         -webkit-transform: rotate(360deg);
     }
 }
+
+.navbar-dark .navbar-nav .dropdown-menu.show>.nav-link {
+    color: black;
+}

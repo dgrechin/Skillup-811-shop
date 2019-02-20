@@ -11,7 +11,8 @@
 
                 <div class="card">
                     {% if vich_uploader_asset(category,'image')  %}
-                        <img src="{{ vich_uploader_asset(category, 'image')|imagine_filter('squared_thumbnail') }}"  alt="{{ category.name }}">
+                       <a href="{{ path('category_item', {'id': category.id}) }}"><img src="{{ vich_uploader_asset(category, 'image')|imagine_filter('squared_thumbnail') }}"
+                             alt="{{ category.name }}"></a>
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title"> {{ category.name }}</h5>

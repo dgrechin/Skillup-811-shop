@@ -56,6 +56,8 @@ class CategoryAdmin extends AbstractAdmin
              ->add('image', VichImageType::class, [
                      'required'=>false,
                      'image_uri' => function (Category $category, $resolveUri) use($cacheManager){
+                         if (!$resolveUri)
+                         { return null;}
                          return $cacheManager->getBrowserPath($resolveUri, 'squared_thumbnail');
                      }]
              );

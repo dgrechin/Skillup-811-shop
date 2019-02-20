@@ -60,6 +60,8 @@ class ProductAdmin extends AbstractAdmin
             -> add('image',VichImageType::class, [
                     'required'=>false,
                     'image_uri' => function (Product $product, $resolveUri) use($cacheManager){
+                        if (!$resolveUri)
+                        { return null;}
                         return $cacheManager->getBrowserPath($resolveUri, 'squared_thumbnail');
                     }]
             );
