@@ -5,10 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  * @ORM\Table(name="categories")
+ * @Vich\Uploadable()
  */
 class Category
 {
@@ -28,6 +31,23 @@ class Category
      * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category")
      */
     private $products;
+
+    /**
+     * @var File
+     * @Vich\UploadableField(mapping="category", fileNameProperty="imageFileName" )
+     */
+    private  $image;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private  $imageFileName;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true))
+     */
+    private $updateAt;
 
     public function __construct()
     {
@@ -86,5 +106,51 @@ class Category
     {
      return (string)$this -> name;
     }
+
+
+    public function getImage(): ?File
+    {
+        return $this->image;
+    }
+
+
+    public function setImage(?File $image): self
+    {
+        $this->image = $image;
+        if ($image !== null)
+        {
+            $this->updateAt = new \DateTime();
+        }
+        return $this;
+    }
+
+
+    public function getImageFileName()
+    {
+        return $this->imageFileName;
+    }
+
+
+    public function setImageFileName($imageFileName): self
+    {
+        $this->imageFileName = $imageFileName;
+        return $this;
+
+    }
+
+
+    public function getUpdateAt(): \DateTime
+    {
+        return $this->updateAt;
+
+    }
+
+
+    public function setUpdateAt(\DateTime $updateAt): self
+    {
+        $this->updateAt = $updateAt;
+        return $this;
+    }
+
 
 }

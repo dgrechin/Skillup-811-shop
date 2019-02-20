@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d79b8d7e8d5ec554ae622e9a404fc97",
+    "content-hash": "ae66a910909e6adbca2bc311d1c51cfc",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1700,16 +1700,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "2.1.0",
+            "version": "2.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "1acae6ac066e431c3c55c4d39971827a02cbe4d5"
+                "reference": "441c9db63b8b817d4660b14d127fb7ace6552f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/1acae6ac066e431c3c55c4d39971827a02cbe4d5",
-                "reference": "1acae6ac066e431c3c55c4d39971827a02cbe4d5",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/441c9db63b8b817d4660b14d127fb7ace6552f28",
+                "reference": "441c9db63b8b817d4660b14d127fb7ace6552f28",
                 "shasum": ""
             },
             "require": {
@@ -1796,7 +1796,7 @@
                 "symfony",
                 "transformation"
             ],
-            "time": "2018-07-10T12:53:54+00:00"
+            "time": "2019-02-19T07:25:59+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6401,16 +6401,16 @@
         },
         {
             "name": "vich/uploader-bundle",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dustin10/VichUploaderBundle.git",
-                "reference": "ee27a379540b3cfc532704e1c37924c0ba67c206"
+                "reference": "4f75981df5913d6a691167186e285b3709891dd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/ee27a379540b3cfc532704e1c37924c0ba67c206",
-                "reference": "ee27a379540b3cfc532704e1c37924c0ba67c206",
+                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/4f75981df5913d6a691167186e285b3709891dd4",
+                "reference": "4f75981df5913d6a691167186e285b3709891dd4",
                 "shasum": ""
             },
             "require": {
@@ -6491,7 +6491,7 @@
                 "file uploads",
                 "upload"
             ],
-            "time": "2019-02-18T13:25:02+00:00"
+            "time": "2019-02-19T09:32:11+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -7670,7 +7670,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "liip/imagine-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

@@ -58,11 +58,11 @@ class ProductAdmin extends AbstractAdmin
             -> add('category')
             -> add('isTop' )
             -> add('image',VichImageType::class, [
-                'required'=>false,
-                'image_uri' => function (Product $product, $resolveUri) use($cacheManager){
-                return $cacheManager->getBrowserPath($resolveUri, 'squared_thumbnail');
-                }
-            ]);
+                    'required'=>false,
+                    'image_uri' => function (Product $product, $resolveUri) use($cacheManager){
+                        return $cacheManager->getBrowserPath($resolveUri, 'squared_thumbnail');
+                    }]
+            );
 
     }
 
