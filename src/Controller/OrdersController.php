@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\OrderItem;
 use App\Entity\Product;
+use App\Form\OrderType;
 use App\Service\OrdersService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -13,9 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class OrdersController extends AbstractController
 {
-    /**
-     * @Route("/orders", name="orders")
-     */
+
     public function index()
     {
         return $this->render('orders/cart.html.twig', [
@@ -88,5 +87,36 @@ class OrdersController extends AbstractController
                 ]);
         }
         return $this->redirectToRoute('cart');
+    }
+    /**
+     * @Route("/orders/create", name="orders_create_order")
+     */
+    public function createOrder(OrdersService $ordersService , Request $request)
+
+    {
+        $order= $ordersService->prepareOrder($this->getUser());
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $ordersService->sendOrder($order);
+            $response=$this->redirectToRoute('orders_thanks');
+            $response->headers->clearCookie('orderId');
+
+            return $response;
+        }
+        return $this->render('order/createOrder.html.twig',[
+            'order'=>$order,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/orders/thanks", name="orders_thanks")
+     */
+    public function orderThanks()
+    {
+        return $this -> render('orders\thanks.html.twig');
     }
 }
