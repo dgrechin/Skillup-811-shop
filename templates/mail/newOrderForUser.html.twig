@@ -1,8 +1,28 @@
 {% block subject  %}{% endblock %}
-
+{%  form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block body %}
 
-    <h1> Заказ # {{ order.id }}</h1>
+    <h1><strong> Здравствуйте!</strong></h1><br>
+    <h1>Вы успешно офориили заказ № {{ order.id }}</h1>
 
-    <p>Вы оформили заказ №  {{ order.id }} . Полная стоимсоть : {{ order.amount | money }}</p>
+    <table class="table table-striped mt-4">
+    <tr>
+        <th>Товар  |  </th>
+        <th>Цена  |  </th>
+        <th>Кол-во  |  </th>
+        <th>Стоимость</th>
+        <th></th>
+    </tr>
+    {% for item in order.items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }} </td>
+            <td>{{ item.cost|money }}</td>
+
+        </tr>
+    {% endfor %}
+    <h4>Полная стоимсоть заказа : {{ order.amount | money }}</h4>
+    <h4> В скором времени с Вами свяжется Наш менеджер для уточнения <br> данных по этому заказу </h4>
+    <h4> Спасибо! Ждем Вас снова </h4>
 {% endblock %}

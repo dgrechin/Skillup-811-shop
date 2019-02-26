@@ -136,6 +136,8 @@ class OrdersService
         $this->entityManager->flush();
         $this ->sendEmail($this->parameters->get('adminEmail'), 'mail/newOrderForAdmin.html.twig', ['order'=> $order
         ]);
+        $this ->sendEmail($order->getEmail(), 'mail/newOrderForUser.html.twig', ['order'=> $order
+        ]);
     }
     private function sendEmail( string  $to ,string $templateName, array $context)
     {

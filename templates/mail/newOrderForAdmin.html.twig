@@ -1,8 +1,38 @@
 {% block subject  %}{% endblock %}
-
+{%  form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block body %}
+
+
+    <table class="table table-striped mt-4">
+    <tr>
+        <th>Имя | </th>
+        <th>Фамилия | </th>
+        <th>Email клиента | </th>
+        <th>Телефон | </th>
+        <th>Адрес доставки | </th>
+        <th></th>
+    </tr>
+
 
     <h1> Заказ # {{ order.id }}</h1>
 
-    <p>Вы оформили заказ №  {{ order.id }} . Полная стоимсоть : {{ order.amount | money }}</p>
+    <p>Вы оформили заказ №  {{ order.id }} . Полная стоимость : {{ order.amount | money }}</p>
+
+    <table class="table table-striped mt-4">
+    <tr>
+        <th>Товар</th>
+        <th>Цена </th>
+        <th>Кол-во</th>
+        <th>Стоимость</th>
+        <th></th>
+    </tr>
+    {% for item in order.items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }} </td>
+            <td>{{ item.cost|money }}</td>
+
+        </tr>
+    {% endfor %}
 {% endblock %}
