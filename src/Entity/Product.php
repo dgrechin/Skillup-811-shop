@@ -72,13 +72,18 @@ class Product
 
 
 
-
-
     public function __construct()
     {
         $this->isTop = false;
         $this->orderItems = new ArrayCollection();
+
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
 
     public function getId(): ?int
     {

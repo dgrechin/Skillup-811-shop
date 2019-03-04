@@ -6,9 +6,8 @@
 parameters:
     locale: 'ru'
     fromEmail: noreply@supershop.com
-    fromName: EntityElehant
+    fromName: Supershop
     adminEmail: admin@supershop.com
-
 
 services:
     # default configuration for services in *this* file
@@ -33,24 +32,32 @@ services:
         tags: ['controller.service_arguments']
 
 
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
 
     App\Admin\CategoryAdmin:
         arguments: [~, App\Entity\Category, ~]
         tags:
-        - { name: sonata.admin, manager_type: orm, label: Категории }
+            - { name: sonata.admin, manager_type: orm, label: Категории }
 
     App\Admin\ProductAdmin:
-        arguments: [~, App\Entity\Product, ~,'@liip_imagine.cache.manager']
+        arguments: [~, App\Entity\Product, ~, '@liip_imagine.cache.manager']
         tags:
             - { name: sonata.admin, manager_type: orm, label: Товары }
 
     App\Admin\FeedbackRequestAdmin:
         arguments: [~, App\Entity\FeedbackRequest, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Отзывы }
+            - { name: sonata.admin, manager_type: orm, label: Обратная связь }
 
+    App\Admin\OrderAdmin:
+        arguments: [~, App\Entity\Order, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Заказы }
+        calls:
+            - ['addChild', ['@App\Admin\OrderItemAdmin']]
 
+    App\Admin\OrderItemAdmin:
+        arguments: [~, App\Entity\OrderItem, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
