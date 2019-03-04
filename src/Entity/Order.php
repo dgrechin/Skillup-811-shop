@@ -38,8 +38,8 @@ class Order
     /**
      * @ORM\Column(type="boolean", options={"default":false})
      */
-
     private $isPaid;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
      */
@@ -127,12 +127,12 @@ class Order
         return $this;
     }
 
-    public function getIsPaid(): ?int
+    public function getIsPaid(): ?bool
     {
         return $this->isPaid;
     }
 
-    public function setIsPaid(int $isPaid): self
+    public function setIsPaid(bool $isPaid): self
     {
         $this->isPaid = $isPaid;
 

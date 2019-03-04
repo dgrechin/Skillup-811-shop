@@ -6,11 +6,11 @@ namespace App\Admin;
 
 use App\Entity\Product;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use function Sodium\add;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProductAdmin extends AbstractAdmin
@@ -51,6 +51,15 @@ class ProductAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $cacheManager = $this->cacheManager;
+
+        if($this->isCurrentRoute('attributes'))
+        {
+            $form
+            ->add('attributeValues');
+        }
+        else{
+
+
         $form
             -> add('name')
             -> add('description')
@@ -66,6 +75,13 @@ class ProductAdmin extends AbstractAdmin
                     }]
             );
 
+    }}
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('attributes', $this->getRouterIdParameter(). '/attributes', [
+            '_controller' => $this->getBaseControllerName(). ':editAction',
+        ]);
     }
 
 

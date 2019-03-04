@@ -3,3 +3,12 @@ Price:	Цена
 Category:	Категория
 Is Top:	Витрина
 Product List:	Список товаров
+Name: Название
+Type: Тип
+
+attribute:
+  type:
+    !php/const App\Entity\Attribute::TYPE_INT: Числовой
+    !php/const App\Entity\Attribute::TYPE_LIST: Список
+
+Attributes : Атрибуты

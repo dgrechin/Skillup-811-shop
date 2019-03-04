@@ -60,7 +60,8 @@ class CategoryAdmin extends AbstractAdmin
                          { return null;}
                          return $cacheManager->getBrowserPath($resolveUri, 'squared_thumbnail');
                      }]
-             );
+             )
+            ->add('attributes');
     }
 
 }

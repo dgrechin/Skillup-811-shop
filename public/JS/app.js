@@ -20,6 +20,7 @@ $('body').on('click', '.js-remove-item', function (event) {
 
         $.get(event.currentTarget.href, function (data) {
             cartItems.html(data);
+            cartInHeader.load(cartInHeader.data('refresh-url'));
 
         unmask();
         });
@@ -29,7 +30,8 @@ $('body').on('click', '.js-remove-item', function (event) {
 $('body').on('input', '.js-item-quantity', function (event) {
     var target = $(event.currentTarget);
    $.post(target.data('href'), {'quantity' : target.val()} , function (data) {
-       cartItems.html(data)
+       cartItems.html(data);
+       cartInHeader.load(cartInHeader.data('refresh-url'));
    })
 });
 
