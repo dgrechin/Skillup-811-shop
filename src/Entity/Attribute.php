@@ -53,7 +53,7 @@ class Attribute
 
     public function __toString()
     {
-        return $this->getName();
+        return(string) $this->getName();
     }
 
     public function getId(): ?int

@@ -75,6 +75,10 @@ class Product
      */
     private $attributeValues;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute", inversedBy="products")
+     */
+    private $attributes;
 
 
     public function __construct()
@@ -95,6 +99,8 @@ class Product
     {
         return $this->id;
     }
+
+
 
     public function getName(): ?string
     {
@@ -264,5 +270,30 @@ class Product
         return $this;
     }
 
+    /**
+     * @return Collection|Attribute[]
+     */
+    public function getAttributes(): Collection
+    {
+        return $this->attributes;
+    }
+
+    public function addAttribute(Attribute $attribute): self
+    {
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes[] = $attribute;
+        }
+
+        return $this;
+    }
+
+    public function removeAttribute(Attribute $attribute): self
+    {
+        if ($this->attributes->contains($attribute)) {
+            $this->attributes->removeElement($attribute);
+        }
+
+        return $this;
+    }
 
 }

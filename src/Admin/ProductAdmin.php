@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Sonata\Form\Type\CollectionType;
 
 class ProductAdmin extends AbstractAdmin
 {
@@ -55,7 +56,14 @@ class ProductAdmin extends AbstractAdmin
         if($this->isCurrentRoute('attributes'))
         {
             $form
-            ->add('attributeValues');
+            ->add('attributeValues',
+                CollectionType::class ,[
+                    'by_reference' => false
+                ],
+                [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                ]);
         }
         else{
 

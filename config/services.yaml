@@ -66,3 +66,4 @@ services:
         arguments: [~, App\Entity\Attribute, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Атрибуты}
+

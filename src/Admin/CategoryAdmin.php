@@ -17,7 +17,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-
+use Sonata\Form\Type\CollectionType;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 
 class CategoryAdmin extends AbstractAdmin
@@ -51,6 +52,19 @@ class CategoryAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $cacheManager = $this->cacheManager;
+        if($this->isCurrentRoute('attributes'))
+        {
+            $form
+                ->add('name')
+                ->add('attributes',
+                    CollectionType::class ,[
+                        'by_reference' => false
+                    ],
+                    [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    ]);
+        }else {
         $form
              ->add('name')
              ->add('image', VichImageType::class, [
@@ -63,5 +77,11 @@ class CategoryAdmin extends AbstractAdmin
              )
             ->add('attributes');
     }
+    }protected function configureRoutes(RouteCollection $collection)
+{
+    $collection->add('attributes', $this->getRouterIdParameter(). '/attributes', [
+        '_controller' => $this->getBaseControllerName(). ':editAction',
+    ]);
+}
 
 }
