@@ -57,12 +57,12 @@ class Product
      * @var File
      * @Vich\UploadableField(mapping="products", fileNameProperty="imageFileName" )
      */
-    private  $image;
+    private $image;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private  $imageFileName;
+    private $imageFileName;
 
     /**
      * @var \DateTime
@@ -71,14 +71,10 @@ class Product
     private $updateAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="product",
+     *     orphanRemoval=true , indexBy="attribute.id", cascade={"all"})
      */
     private $attributeValues;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute", inversedBy="products")
-     */
-    private $attributes;
 
 
     public function __construct()
@@ -99,7 +95,6 @@ class Product
     {
         return $this->id;
     }
-
 
 
     public function getName(): ?string
@@ -232,9 +227,8 @@ class Product
     public function setImage(?File $image): self
     {
         $this->image = $image;
-        if ($image !==null)
-        {
-            $this->updateAt=new \DateTime();
+        if ($image !== null) {
+            $this->updateAt = new \DateTime();
         }
         return $this;
     }
@@ -250,7 +244,7 @@ class Product
     public function addAttributeValue(AttributeValue $attributeValue): self
     {
         if (!$this->attributeValues->contains($attributeValue)) {
-            $this->attributeValues[] = $attributeValue;
+            $this->attributeValues[$attributeValue->getAttribute()->getId()] = $attributeValue;
             $attributeValue->setProduct($this);
         }
 
@@ -269,31 +263,5 @@ class Product
 
         return $this;
     }
-
-    /**
-     * @return Collection|Attribute[]
-     */
-    public function getAttributes(): Collection
-    {
-        return $this->attributes;
-    }
-
-    public function addAttribute(Attribute $attribute): self
-    {
-        if (!$this->attributes->contains($attribute)) {
-            $this->attributes[] = $attribute;
-        }
-
-        return $this;
-    }
-
-    public function removeAttribute(Attribute $attribute): self
-    {
-        if ($this->attributes->contains($attribute)) {
-            $this->attributes->removeElement($attribute);
-        }
-
-        return $this;
-    }
-
 }
+

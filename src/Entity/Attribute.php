@@ -39,7 +39,7 @@ class Attribute
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="attribute", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="attribute", orphanRemoval=true, indexBy="attribute.id")
      */
     private $attributeValues;
 
