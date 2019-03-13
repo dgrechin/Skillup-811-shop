@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "08da2e43bc1c6d8996e04eb806370814",
+    "content-hash": "c8b9c8a7ec512affea60a2786d7451ac",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -6574,6 +6574,28 @@
             "time": "2019-02-19T09:32:11+00:00"
         },
         {
+            "name": "wayforpay/php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wayforpay/PHP.git",
+                "reference": "263c9235ceba6a806fbdb441d6c0fe4d236312f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wayforpay/PHP/zipball/263c9235ceba6a806fbdb441d6c0fe4d236312f5",
+                "reference": "263c9235ceba6a806fbdb441d6c0fe4d236312f5",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Wayforpay PHP API",
+            "time": "2017-10-05T11:58:45+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.4.0",
             "source": {
@@ -7675,7 +7697,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "liip/imagine-bundle": 20
+        "liip/imagine-bundle": 20,
+        "wayforpay/php": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
