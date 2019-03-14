@@ -74,6 +74,7 @@ class ProductAdmin extends AbstractAdmin
             -> add('price')
             -> add('category')
             -> add('isTop' )
+            -> add('attributeValues')
             -> add('image',VichImageType::class, [
                     'required'=>false,
                     'image_uri' => function (Product $product, $resolveUri) use($cacheManager){
