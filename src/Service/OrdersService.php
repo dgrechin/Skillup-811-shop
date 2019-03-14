@@ -76,7 +76,7 @@ class OrdersService
     public function getOrderFromRequest(): ?Order
     {
         $order = null;
-       $orderId = $this ->request->cookies->get('order_id');
+       $orderId = $this ->request->cookies->get('orderId');
 
        if ($orderId)
        {

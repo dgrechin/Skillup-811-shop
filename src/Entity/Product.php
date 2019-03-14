@@ -75,6 +75,10 @@ class Product
      */
     private $attributeValues;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute", inversedBy="products")
+     */
+    private $attributes;
 
 
     public function __construct()
@@ -265,5 +269,6 @@ class Product
 
         return $this;
     }
+
 
 }

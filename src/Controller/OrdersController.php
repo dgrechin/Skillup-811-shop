@@ -37,7 +37,7 @@ class OrdersController extends AbstractController
         $response = $this->redirect($referer);
         }
 
-        $response->headers->setCookie(new Cookie('order_id' , $order->getId(),new \DateTime('+1 year')));
+        $response->headers->setCookie(new Cookie('orderId' , $order->getId(),new \DateTime('+1 year')));
 
         return $response;
     }
@@ -101,7 +101,7 @@ class OrdersController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $ordersService->sendOrder($order);
-            $response=$this->redirectToRoute('orders_thanks');
+            $response=$this->redirectToRoute('payments_make_payment', ['id' =>$order->getId()]);
             $response->headers->clearCookie('orderId');
 
             return $response;
@@ -111,6 +111,8 @@ class OrdersController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
 
     /**
      * @Route("/orders/thanks", name="orders_thanks")

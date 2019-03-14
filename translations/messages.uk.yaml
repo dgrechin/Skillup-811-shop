@@ -12,3 +12,6 @@ attribute:
     !php/const App\Entity\Attribute::TYPE_LIST: Список
 
 Attributes : Атрибуты
+
+Value : Значение
+Attribute : Атрибут

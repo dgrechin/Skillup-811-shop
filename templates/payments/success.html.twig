@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Заказ № {{ order.id }} успешно оплачен!{% endblock %}
+
+
+{% block body %}
+
+    <h1>Заказ № {{ order.id }} успешно оплачен!</h1>
+    <a href="{{ path('default') }}"></a>
+{% endblock %}
+
+
+

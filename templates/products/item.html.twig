@@ -11,4 +11,9 @@
     <p> {{ product.description|nl2br }}</p>
     <a href="{{ path('orders_add_to_cart', {'id' : product.id}) }}" class="btn btn-primary mt-1 js-add-to-cart">Добавить в корзину </a>
 
+    {% for attribute in product.attributes %}
+        <h3> {{ attribute }} : {{ attribute.attributeValues }} </h3>
+    {% endfor %}
+
+
 {% endblock %}
