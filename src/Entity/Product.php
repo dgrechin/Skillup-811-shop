@@ -71,14 +71,9 @@ class Product
     private $updateAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="product", indexBy="attribute_id",  orphanRemoval=true, cascade={"persist"})
      */
     private $attributeValues;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute", inversedBy="products")
-     */
-    private $attributes;
 
 
     public function __construct()
@@ -250,7 +245,7 @@ class Product
     public function addAttributeValue(AttributeValue $attributeValue): self
     {
         if (!$this->attributeValues->contains($attributeValue)) {
-            $this->attributeValues[] = $attributeValue;
+            $this->attributeValues[$attributeValue->getAttribute()->getId()] = $attributeValue;
             $attributeValue->setProduct($this);
         }
 
