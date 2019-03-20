@@ -11,6 +11,7 @@ namespace App\Admin;
 
 use App\Entity\Category;
 
+use function Sodium\add;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -24,6 +25,10 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class CategoryAdmin extends AbstractAdmin
 
 {
+    protected $datagridValues = [
+        '_sort_by' => 'left',
+    ];
+
     /**
      * @property  cacheManager
      */
@@ -38,44 +43,39 @@ class CategoryAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list)
     {
         $list
-            -> addIdentifier('name')
-            -> addIdentifier('id');
+
+            -> addIdentifier('id')
+        -> addIdentifier('parent')
+            -> addIdentifier('name');
+
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
          -> add('id')
-         -> add('name');
+         -> add('name')
+         -> add('parent');
+
     }
 
     protected function configureFormFields(FormMapper $form)
     {
         $cacheManager = $this->cacheManager;
-        if($this->isCurrentRoute('attributes'))
+
         {
             $form
                 ->add('name')
-                ->add('attributes',
-                    CollectionType::class ,[
-                        'by_reference' => false
-                    ],
-                    [
-                        'edit' => 'inline',
-                        'inline' => 'table',
-                    ]);
-        }else {
-        $form
-             ->add('name')
-             ->add('image', VichImageType::class, [
-                     'required'=>false,
-                     'image_uri' => function (Category $category, $resolveUri) use($cacheManager){
-                         if (!$resolveUri)
-                         { return null;}
-                         return $cacheManager->getBrowserPath($resolveUri, 'squared_thumbnail');
-                     }]
-             )
-            ->add('attributes');
+                ->add('attributes')
+                ->add('parent')
+                ->add('image', VichImageType::class, [
+                    'required'=>false,
+                    'image_uri' => function (Category $category, $resolveUri) use($cacheManager){
+                        if (!$resolveUri)
+                        { return null;}
+                        return $cacheManager->getBrowserPath($resolveUri, 'squared_thumbnail');
+                    }]
+            );
     }
     }protected function configureRoutes(RouteCollection $collection)
 {
