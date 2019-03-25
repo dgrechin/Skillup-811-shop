@@ -100,3 +100,29 @@
 .navbar-dark .navbar-nav .dropdown-menu.show>.nav-link {
     color: black;
 }
+
+.search-form {
+    position: relative;
+
+}
+
+.search-form .list-group{
+    position: absolute;
+    left:0;
+    top: 2.5rem;
+    min-width: 20rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
