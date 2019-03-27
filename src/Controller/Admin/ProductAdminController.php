@@ -4,9 +4,11 @@
 namespace App\Controller\Admin;
 
 
+use App\Entity\Attribute;
 use App\Entity\AttributeValue;
 use App\Entity\Product;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -55,10 +57,24 @@ class ProductAdminController extends CRUDController
                     $attributeValue ->setAttribute($attribute);
                     $product->addAttributeValue($attributeValue);
             }
-            $formBuilder->add('attribute'. $attribute->getId() ,TextType::class, [
-                'property_path'=>'attributeValues[' . $attribute->getId(). '].value',
-                'label' => $attribute->getName(),
-            ]);
+
+            switch ($attribute->getType()){
+                case Attribute::TYPE_INT:
+                    $formBuilder->add('attribute'. $attribute->getId() ,TextType::class, [
+                        'property_path'=>'attributeValues[' . $attribute->getId(). '].value',
+                        'label' => $attribute->getName(),
+                    ]);
+                    break;
+                case Attribute::TYPE_LIST:
+                    $formBuilder->add('attribute'. $attribute->getId() ,ChoiceType::class, [
+                        'property_path'=>'attributeValues[' . $attribute->getId(). '].value',
+                        'label' => $attribute->getName(),
+                        'choices'=>array_flip($attribute->getChoices()),
+                    ]);
+
+            }
+
+
         }
         return $formBuilder->getForm();
     }

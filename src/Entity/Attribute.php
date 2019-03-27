@@ -33,6 +33,8 @@ class Attribute
      */
     private $type;
 
+
+
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="attributes")
      */
@@ -42,6 +44,12 @@ class Attribute
      * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="attribute", orphanRemoval=true, indexBy="attribute.id")
      */
     private $attributeValues;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $choices = [];
+
 
     public function __construct()
     {
@@ -140,6 +148,18 @@ class Attribute
                 $attributeValue->setAttribute(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getChoices(): ?array
+    {
+        return $this->choices;
+    }
+
+    public function setChoices(?array $choices): self
+    {
+        $this->choices = $choices;
 
         return $this;
     }

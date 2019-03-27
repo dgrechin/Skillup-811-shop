@@ -151,7 +151,7 @@ class Category
 
         do {
             $names[]= (string)$current->getName();
-            $current= $current->$this->getParent();
+            $current= $current->getParent();
         }while ($current);
         $names = array_reverse($names);
 

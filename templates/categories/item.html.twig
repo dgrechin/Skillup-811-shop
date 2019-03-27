@@ -14,6 +14,8 @@
      {% for attribute in category.attributes%}
      <div class="row ">
       <p> {{ attribute.name }}</p>
+
+         {% if attribute.type == attribute.TYPE_INT %}
          <div class="form-row">
                    <div class="form-group col-6">
                     {{ form_label (filterForm['attr_min_' ~ attribute.id], 'от') }}
@@ -24,13 +26,16 @@
                       {{ form_widget (filterForm['attr_max_' ~ attribute.id]) }}
                   </div>
          </div>
+         {% elseif attribute.type == attribute.TYPE_LIST %}
+             {{ form_widget(filterForm['attr_' ~ attribute.id]) }}
+             {% endif %}
      </div>
         {% endfor %}
         <button type="submit"> Применить</button>
      {{ form_end(filterForm) }}
     </div>
 
-    <div class="col-10">{{ include('products/_productsList.html.twig', {'products': category.products}) }}
+    <div class="col-10">{{ include('products/_productsList.html.twig', {'products': products}) }}
 
     </div>
 
